@@ -28,10 +28,37 @@ public class HandEvaluator {
 	}
 	
 	public static MadeHand evaluate(UnmadeHand pre) {
+		
+		HashMap<Integer, Integer> rankHistogram = getRankHistogram(pre); 
+		HashMap<Suit, Integer> suitHistogram = getSuitHistogram(pre); 
+		
+		HandType handType = null; 
+		
+		if (isStraightFlush(pre, suitHistogram))
+			handType = HandType.STRAIGHT_FLUSH;
+		if (isQuads(rankHistogram))
+			handType = HandType.QUADS;
+		if (isFullHouse(rankHistogram))
+			handType = HandType.FULL_HOUSE; 
+		if (isFlush(suitHistogram))
+			handType = HandType.FLUSH; 
+		if (isStraight(pre))
+			handType = HandType.STRAIGHT; 
+		if (isTrips(rankHistogram))
+			handType = HandType.TRIPS; 
+		if (isTwoPair(rankHistogram))
+			handType = HandType.TWO_PAIR; 
+		if (isPair(rankHistogram))
+			handType = HandType.PAIR; 
+		else
+			handType = HandType.HIGH_CARD; 
+		
+		
+		
 		return null; 
 	}
 	
-	private HashMap<Integer, Integer> getRankHistogram(UnmadeHand hand) {
+	private static HashMap<Integer, Integer> getRankHistogram(UnmadeHand hand) {
 		
 		HashMap<Integer, Integer> histogram = new HashMap<>(); 
 		
@@ -45,7 +72,7 @@ public class HandEvaluator {
 		return histogram; 
 	}
 	
-	private HashMap<Suit, Integer> getSuitHistogram(UnmadeHand hand) {
+	private static HashMap<Suit, Integer> getSuitHistogram(UnmadeHand hand) {
 		
 		HashMap<Suit, Integer> histogram = new HashMap<>(); 
 		
@@ -61,7 +88,7 @@ public class HandEvaluator {
 	}
 	
 	
-	private boolean isStraightFlush(UnmadeHand hand, HashMap<Suit, Integer> histrogram) {
+	private static boolean isStraightFlush(UnmadeHand hand, HashMap<Suit, Integer> histrogram) {
 		
 		if (isStraightFlushWheel(hand, histrogram)) {
 			return true; 
@@ -93,7 +120,7 @@ public class HandEvaluator {
 		return false; 
 	}
 	
-	private boolean isQuads(HashMap<Integer, Integer> histogram) {
+	private static boolean isQuads(HashMap<Integer, Integer> histogram) {
 		for (int count : histogram.values()) 
 			if (count == 4) 
 				return true;
@@ -101,11 +128,11 @@ public class HandEvaluator {
 		return false;  
 	}
 	
-	private boolean isFullHouse(HashMap<Integer, Integer> histogram) {
+	private static boolean isFullHouse(HashMap<Integer, Integer> histogram) {
 		return isTrips(histogram) && isTwoPair(histogram); 
 	}
 	
-	private boolean isFlush(HashMap<Suit, Integer> histogram) {
+	private static boolean isFlush(HashMap<Suit, Integer> histogram) {
 		for (int count : histogram.values()) 
 			if (count >= 5) 
 				return true;
@@ -113,7 +140,7 @@ public class HandEvaluator {
 		return false; 
 	}
 	
-	private boolean isStraight(UnmadeHand hand) {
+	private static boolean isStraight(UnmadeHand hand) {
 		
 		if (isWheel(hand)) {
 			return true; 
@@ -139,7 +166,7 @@ public class HandEvaluator {
 		return false; 
 	}
 	
-	private boolean isTrips(HashMap<Integer, Integer> histogram) {
+	private static boolean isTrips(HashMap<Integer, Integer> histogram) {
 		for (int count : histogram.values()) 
 			if (count == 3) 
 				return true;
@@ -147,7 +174,7 @@ public class HandEvaluator {
 		return false; 
 	}
 	
-	private boolean isTwoPair(HashMap<Integer, Integer> histogram) {
+	private static boolean isTwoPair(HashMap<Integer, Integer> histogram) {
 		int numPairs = 0; 
 		
 		for (int count : histogram.values()) 
@@ -157,7 +184,7 @@ public class HandEvaluator {
 		return numPairs >= 2;  
 	}
 	
-	private boolean isPair(HashMap<Integer, Integer> histogram) {
+	private static boolean isPair(HashMap<Integer, Integer> histogram) {
 		
 		for (int count : histogram.values()) 
 			if (count == 2) 
@@ -166,7 +193,7 @@ public class HandEvaluator {
 		return false; 
 	}
 	
-	private boolean isStraightFlushWheel(UnmadeHand hand, HashMap<Suit, Integer> histogram) {
+	private static boolean isStraightFlushWheel(UnmadeHand hand, HashMap<Suit, Integer> histogram) {
 		
 		Suit flushedSuit = null; 
 		
@@ -195,7 +222,7 @@ public class HandEvaluator {
 		return ace && two && three && four && five; 
 	}
 	
-	private boolean isWheel(UnmadeHand hand) {
+	private static boolean isWheel(UnmadeHand hand) {
 		boolean ace = false, two = false, three = false, four = false, five = false;  
 		
 		for (Card c : hand.cards) {

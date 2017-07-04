@@ -1,8 +1,6 @@
 package game_components;
 
-import game_components.HandEvaluator.HandType; 
-
-import static game_components.HandEvaluator.HandType.*;
+import game_components.HandEvaluator.HandType;
 
 
 /**
@@ -13,24 +11,33 @@ import static game_components.HandEvaluator.HandType.*;
  * @author Patrick Wamsley
  */
 public class MadeHand implements Comparable<MadeHand> {
-	
-	/**
-	 * The high card of this hand, ie the Ace in a nut flush, the 8 in an 8-high straight, or the King in King-high. 
-	 */
-	public final int highCardRank; 
-	
+
+	public final int[] highCardRankings; 
+
 	public final HandType handType;  
-	
-	public MadeHand(int highCardRank, HandType handType) {
-		this.highCardRank = highCardRank; 
+
+	public MadeHand(int[] highCardRankings, HandType handType) {
+		if (highCardRankings.length != 5) 
+			throw new IllegalArgumentException("Made hands have 5 cards."); 
+		this.highCardRankings = highCardRankings; 
 		this.handType = handType; 
 	}
 
 	@Override
 	public int compareTo(MadeHand other) {
+		
 		int deltaStregnths =  handType.compareStrenghts(other.handType); 
-		return deltaStregnths != 0 ? deltaStregnths : this.highCardRank - other.highCardRank; 
+		if (deltaStregnths != 0)
+			return deltaStregnths; 
+
+		for (int i = 0; i < highCardRankings.length; i++) {
+			int deltaCurrentHighCard = highCardRankings[i] - other.highCardRankings[i];
+			
+			if (deltaCurrentHighCard != 0)
+				return deltaCurrentHighCard; 
+		}
+
+		return 0; 
 	}
-	
 
 }
