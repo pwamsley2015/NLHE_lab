@@ -10,7 +10,7 @@ public class Card implements Comparable<Card> {
 	/**
 	 * Dummy card used to avoid using null. 
 	 */
-	public static final Card BLUE_EYES_WHITE_DRAGON = new Card(Suit.SPADES, 3000); 
+	public static final Card BLUE_EYES_WHITE_DRAGON = new Card(Suit.SPADES, -10); 
 	
 	public static enum Suit {HEARTS, DIAMONDS, SPADES, CLUBS} 
 	
