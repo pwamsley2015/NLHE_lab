@@ -39,7 +39,7 @@ public class Card implements Comparable<Card> {
 
 	@Override
 	public int compareTo(Card other) {
-		return this.rank - other.rank; 
+		return other.rank - this.rank; 
 	}
 	
 	@Override

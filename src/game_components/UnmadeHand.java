@@ -10,13 +10,14 @@ public class UnmadeHand {
 
 	public final Card[] cards = new Card[7]; 
 	private int cardsInHand = 0; 
-	
+
 	public UnmadeHand addCard(Card c) {
 		if (cardsInHand < 7) {
 			cards[cardsInHand] = c; 
 			cardsInHand++; 
-		} 
-		
-		throw new IllegalStateException("Tried to deal too many cards to this hand"); 
+		} else {
+			throw new IllegalStateException("Tried to deal too many cards to this hand"); 
+		}
+		return this; 
 	}
 }
